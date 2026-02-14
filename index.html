@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Valentine Password Surprise 💌</title>
+
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+body{
+  height:100vh;
+  margin:0;
+  overflow:hidden;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(135deg,#ff4e7a,#ff758c,#ff9a9e);
+  font-family:'Poppins',sans-serif;
+  color:white;
+}
+
+/* Floating hearts */
+.heart{position:absolute;bottom:-30px;font-size:20px;opacity:.7;animation: float 8s linear infinite;}
+@keyframes float{from{transform:translateY(0);}to{transform:translateY(-120vh);}}
+
+/* Envelope */
+.envelope-box{text-align:center;transition:.8s}
+.envelope{width:260px;height:170px;position:relative;cursor:pointer;margin:auto;}
+.envelope .back{background:#fff;width:100%;height:100%;border-radius:12px;}
+.envelope .flap{position:absolute;top:0;width:0;height:0;border-left:130px solid transparent;border-right:130px solid transparent;border-top:85px solid #ff2e63;transform-origin:top;transition:.7s;}
+.envelope.open .flap{transform:rotateX(180deg)}
+.hide{opacity:0;transform:scale(.5);}
+
+/* Letter */
+.letter{position:absolute;width:92%;max-width:420px;padding:35px;background:rgba(255,255,255,.25);backdrop-filter:blur(18px);border-radius:30px;text-align:center;box-shadow:0 25px 60px rgba(0,0,0,.35);opacity:0;transform:scale(.6);transition:1s ease;}
+.letter.show{opacity:1;transform:scale(1);}
+#typedText{min-height:140px;line-height:1.7;font-size:16px;}
+
+/* Button */
+.btn-love{margin-top:20px;border-radius:50px;padding:10px 25px;}
+
+/* Mobile */
+@media(max-width:576px){
+  .envelope{transform:scale(.9)}
+  .letter{padding:28px}
+}
+</style>
+</head>
+<body>
+
+<!-- Floating Hearts -->
+<script>
+for(let i=0;i<25;i++){
+  let h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="💖";
+  h.style.left=Math.random()*100+"vw";
+  h.style.animationDuration=5+Math.random()*5+"s";
+  document.body.appendChild(h);
+}
+</script>
+
+<!-- Name Input -->
+<div class="position-absolute top-0 p-3 w-100 text-center">
+  <input id="nameInput" class="form-control w-75 mx-auto rounded-pill text-center"
+         placeholder="Type your name 💕">
+</div>
+
+<!-- Envelope -->
+<div class="envelope-box" id="envBox">
+  <div class="envelope" id="envelope">
+    <div class="flap"></div>
+    <div class="back"></div>
+  </div>
+ </div>
+
+<!-- Letter -->
+<div class="letter" id="letter">
+  <h1 id="title"></h1>
+  <p id="typedText"></p>
+  <button class="btn btn-light btn-love mt-3" onclick="location.reload()">💞💞</button>
+</div>
+
+<script>
+const envelope=document.getElementById("envelope");
+const envBox=document.getElementById("envBox");
+const letter=document.getElementById("letter");
+const nameInput=document.getElementById("nameInput");
+const instruction=document.getElementById("instruction");
+
+// ✅ Set the "password name" here:
+const secretName="fuchhi"; // <- change this to the name you want
+
+// Detect input dynamically
+nameInput.addEventListener("input",()=>{
+  if(nameInput.value.trim().toLowerCase() === secretName.toLowerCase()){
+    openEnvelope();
+  }
+});
+
+function openEnvelope(){
+  const name=nameInput.value.trim();
+  document.getElementById("title").innerText=`Happy Valentine’s Day ❤️`;
+  
+  envelope.classList.add("open");
+  envBox.classList.add("hide");
+
+  setTimeout(()=>{
+    letter.classList.add("show");
+    typeText(
+        `Dear Anjana ,
+
+Friends like you make ordinary
+ days feel a little brighter
+  and a lot more fun. 
+  
+  
+  once again 
+  Happy Valentine’s Day! 💖
+  ${name}`);
+  },700);
+}
+
+/* Typing Effect */
+function typeText(text){
+  let i=0;
+  function typing(){
+    if(i<text.length){
+      document.getElementById("typedText").innerHTML+=
+        text[i]==="\n"? "<br>":text[i];
+      i++; setTimeout(typing,40);
+    }
+  }
+  typing();
+}
+</script>
+
+</body>
+</html>
